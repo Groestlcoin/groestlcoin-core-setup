@@ -14,3 +14,4 @@ Also visit [bitcoin.org](https://bitcoin.org/en/bitcoin-core/) for further infor
 -   [What Is A Full Node?](https://bitcoin.org/en/full-node#what-is-a-full-node)
 -   [Sample Bitcoin Configuration File](https://github.com/bitcoin/bitcoin/blob/master/share/examples/bitcoin.conf)
 -   [Bitcoin Core Config Generator](https://jlopp.github.io/bitcoin-core-config-generator/)
+-   [Networking Configuration](https://bitcoin.org/en/full-node#network-configuration)
