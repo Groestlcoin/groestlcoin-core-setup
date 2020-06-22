@@ -47,22 +47,26 @@ This is the install script for Bitcoin full node based on Bitcoin Core.
 # Once bitcoin core is successfully installed
 
 To stop Bitcoin Core:
-
-  cd $TARGET_DIR/bin && ./stop.sh
-
+```sh
+$ cd $TARGET_DIR/bin && ./stop.sh
+```
+  
 To start Bitcoin Core again:
-
-  cd $TARGET_DIR/bin && ./start.sh
+```sh
+$ cd $TARGET_DIR/bin && ./start.sh
+```
 
 To use bitcoin-cli program:
-
-  cd $TARGET_DIR/bin && ./bitcoin-cli -conf=$TARGET_DIR/.bitcoin/bitcoin.conf getnetworkinfo
+```sh
+$ cd $TARGET_DIR/bin && ./bitcoin-cli -conf=$TARGET_DIR/.bitcoin/bitcoin.conf getnetworkinfo
+```
 
 To view Bitcoin Core log file:
-
-  tail -f $TARGET_DIR/.bitcoin/debug.log
+```sh
+$ tail -f $TARGET_DIR/.bitcoin/debug.log
+```
 
 To uninstall Bitcoin Core:
-
-  ./install-full-node.sh -u
-
+```sh
+$ ./install-full-node.sh -u
+```
