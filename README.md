@@ -15,3 +15,54 @@ Also visit [bitcoin.org](https://bitcoin.org/en/bitcoin-core/) for further infor
 -   [Sample Bitcoin Configuration File](https://github.com/bitcoin/bitcoin/blob/master/share/examples/bitcoin.conf)
 -   [Bitcoin Core Config Generator](https://jlopp.github.io/bitcoin-core-config-generator/)
 -   [Networking Configuration](https://bitcoin.org/en/full-node#network-configuration)
+
+# Usage
+
+This is the install script for Bitcoin full node based on Bitcoin Core.
+
+  Usage: $0 [-h] [-v <version>] [-t <target_directory>] [-p <port>] [-b] [-u]
+
+  -h
+      Print help.
+
+  -v <version>
+      Version of Bitcoin Core to install.
+      Default: $VERSION
+
+  -t <target_directory>
+      Target directory for source files and binaries.
+      Default: $HOME/bitcoin-core
+
+  -p <port>
+      Bitcoin Core listening port.
+      Default: $PORT
+
+  -b
+      Build and install Bitcoin Core from source.
+      Default: $BUILD
+
+  -u
+      Uninstall Bitcoin Core.
+      
+# Once bitcoin core is successfully installed
+
+To stop Bitcoin Core:
+
+  cd $TARGET_DIR/bin && ./stop.sh
+
+To start Bitcoin Core again:
+
+  cd $TARGET_DIR/bin && ./start.sh
+
+To use bitcoin-cli program:
+
+  cd $TARGET_DIR/bin && ./bitcoin-cli -conf=$TARGET_DIR/.bitcoin/bitcoin.conf getnetworkinfo
+
+To view Bitcoin Core log file:
+
+  tail -f $TARGET_DIR/.bitcoin/debug.log
+
+To uninstall Bitcoin Core:
+
+  ./install-full-node.sh -u
+
