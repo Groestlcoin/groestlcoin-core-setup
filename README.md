@@ -29,7 +29,7 @@ $ git clone https://github.com/cjrequena/bitcoin-core-setup.git
 ```sh
 $ chmod +x install-full-node.sh
 ```
-4. Excute the shell script
+4. Execute the shell script
 ```sh
 $ ./install-full-node.sh
 ```
