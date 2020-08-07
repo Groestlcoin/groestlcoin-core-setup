@@ -21,18 +21,18 @@ Also visit [bitcoin.org](https://bitcoin.org/en/bitcoin-core/) for further infor
 
 1.  Clone this repository.
 ```sh
-git clone https://github.com/cjrequena/bitcoin-core-setup.git
+$ git clone https://github.com/cjrequena/bitcoin-core-setup.git
 ```
 
-2. Open a terminan and navigate to the folde where the repository was cloned.
+2. Open a terminal and navigate to the folder where the repository was cloned.
 3. Change the access permission of install-full-node.sh
 ```sh
-chmod +x install-full-node.sh
+$ chmod +x install-full-node.sh
 ```
 4. Excute the shell script
 ```sh
-./install-full-node.sh
-
+$ ./install-full-node.sh
+```
 
 # Usage  
 This is the install script for Bitcoin full node based on Bitcoin Core.
