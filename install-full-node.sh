@@ -151,23 +151,25 @@ EOF
 }
 
 config_file(){
-cat  <<EOF
-  listen=1
-  bind=0.0.0.0
-  port=$PORT
-  maxconnections=64
-  upnp=1
-
-  dbcache=64
-  par=2
-  checkblocks=24
-  checklevel=0
-
-  disablewallet=1
-
-  rpcbind=127.0.0.1
-  rpcport=8332
-  rpcallowip=127.0.0.1
+cat  <<EOF  
+listen=1
+server=1
+bind=0.0.0.0
+port=$PORT
+maxconnections=64
+upnp=1
+dbcache=5094
+par=2
+checkblocks=24
+checklevel=0
+disablewallet=0
+timeout=6000
+rpcauth=foo:abb4d11ae9ebbd29e050566bcb85fcb4$ccdbda870e28a23b60b3037aebf82832a18862860e6aaa2b95eb86131caeb350
+rpcuser=foo
+rpcpassword=WzW8vHRH6u48TW7qizm-CHgJNMffLJXjMPDBpwH38qQ=
+rpcbind=127.0.0.1
+rpcport=8332
+prune=10000
 EOF
 }
 
