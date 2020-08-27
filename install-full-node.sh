@@ -14,10 +14,10 @@ SUDO=""
 #----------------------------------
 #
 #----------------------------------
-REPO_URL="https://github.com/bitcoin/bitcoin.git"
-VERSION=0.19.0.1 # See https://github.com/bitcoin/bitcoin/tags for latest version.
-TARGET_DIR=$HOME/bitcoin-core
-PORT=8333
+REPO_URL="https://github.com/groestlcoin/groestlcoin.git"
+VERSION=2.20.1 # See https://github.com/groestlcoin/groestlcoin/tags for latest version.
+TARGET_DIR=$HOME/groestlcoin-core
+PORT=1331
 BUILD=0
 UNINSTALL=0
 
@@ -70,7 +70,7 @@ program_exists() {
 help() {
 cat <<EOF
 
-  This is the install script for Bitcoin full node based on Bitcoin Core.
+  This is the install script for Groestlcoin full node based on Groestlcoin Core.
 
   Usage: $0 [-h] [-v <version>] [-t <target_directory>] [-p <port>] [-b] [-u]
 
@@ -78,23 +78,23 @@ cat <<EOF
       Print help.
 
   -v <version>
-      Version of Bitcoin Core to install.
+      Version of Groestlcoin Core to install.
       Default: $VERSION
 
   -t <target_directory>
       Target directory for source files and binaries.
-      Default: $HOME/bitcoin-core
+      Default: $HOME/groestlcoin-core
 
   -p <port>
-      Bitcoin Core listening port.
+      Groestlcoin Core listening port.
       Default: $PORT
 
   -b
-      Build and install Bitcoin Core from source.
+      Build and install Groestlcoin Core from source.
       Default: $BUILD
 
   -u
-      Uninstall Bitcoin Core.
+      Uninstall Groestlcoin Core.
 
 EOF
 }
@@ -104,23 +104,23 @@ cat <<EOF
 
   # README
 
-  To stop Bitcoin Core:
+  To stop Groestlcoin Core:
 
       cd $TARGET_DIR/bin && ./stop.sh
 
-  To start Bitcoin Core again:
+  To start Groestlcoin Core again:
 
       cd $TARGET_DIR/bin && ./start.sh
 
-  To use bitcoin-cli program:
+  To use groestlcoin-cli program:
 
-      cd $TARGET_DIR/bin && ./bitcoin-cli -conf=$TARGET_DIR/.bitcoin/bitcoin.conf getnetworkinfo
+      cd $TARGET_DIR/bin && ./groestlcoin-cli -conf=$TARGET_DIR/.groestlcoin/groestlcoin.conf getnetworkinfo
 
-  To view Bitcoin Core log file:
+  To view Groestlcoin Core log file:
 
-      tail -f $TARGET_DIR/.bitcoin/debug.log
+      tail -f $TARGET_DIR/.groestlcoin/debug.log
 
-  To uninstall Bitcoin Core:
+  To uninstall Groestlcoin Core:
 
       ./install-full-node.sh -u
 
@@ -132,26 +132,26 @@ cat <<EOF
 
   Welcome!
 
-  You are about to install a Bitcoin full node based on Bitcoin Core v$VERSION.
+  You are about to install a Groestlcoin full node based on Groestlcoin Core v$VERSION.
 
   All files will be installed under $TARGET_DIR directory.
 
   Your node will be configured to accept incoming connections from other nodes in
-  the Bitcoin network by using uPnP feature on your router.
+  the Groestlcoin network by using uPnP feature on your router.
 
   For security reason, wallet functionality is not enabled by default.
 
   After the installation, it may take several hours for your node to download a
   full copy of the blockchain.
 
-  If you wish to uninstall Bitcoin Core later, you can download this script and
+  If you wish to uninstall Groestlcoin Core later, you can download this script and
   run "sh install-full-node.sh -u".
 
 EOF
 }
 
 config_file(){
-cat  <<EOF  
+cat  <<EOF
 listen=1
 server=1
 bind=0.0.0.0
@@ -168,16 +168,15 @@ rpcauth=foo:abb4d11ae9ebbd29e050566bcb85fcb4$ccdbda870e28a23b60b3037aebf82832a18
 rpcuser=foo
 rpcpassword=WzW8vHRH6u48TW7qizm-CHgJNMffLJXjMPDBpwH38qQ=
 rpcbind=127.0.0.1
-rpcport=8332
-prune=10000
+rpcport=1441
 EOF
 }
 
 start_sh(){
 cat <<EOF
 	#!/bin/sh
-	if [ -f $TARGET_DIR/bin/bitcoind ]; then
-	    $TARGET_DIR/bin/bitcoind -conf=$TARGET_DIR/.bitcoin/bitcoin.conf -datadir=$TARGET_DIR/.bitcoin -daemon
+	if [ -f $TARGET_DIR/bin/groestlcoind ]; then
+	    $TARGET_DIR/bin/groestlcoind -conf=$TARGET_DIR/.groestlcoin/groestlcoin.conf -datadir=$TARGET_DIR/.groestlcoin -daemon
 	fi
 EOF
 }
@@ -185,8 +184,8 @@ EOF
 stop_sh(){
 cat  <<EOF
 	#!/bin/sh
-	if [ -f $TARGET_DIR/.bitcoin/bitcoind.pid ]; then
-	    kill \$(cat $TARGET_DIR/.bitcoin/bitcoind.pid)
+	if [ -f $TARGET_DIR/.groestlcoin/groestlcoind.pid ]; then
+	    kill \$(cat $TARGET_DIR/.groestlcoin/groestlcoind.pid)
 	fi
 EOF
 }
@@ -194,8 +193,8 @@ EOF
 start_qt_sh(){
 cat<<EOF
   #!/bin/sh
-	if [ -f $TARGET_DIR/bin/bitcoin-qt ]; then
-      $TARGET_DIR/bin/bitcoin-qt -conf=$TARGET_DIR/.bitcoin/bitcoin.conf -datadir=$TARGET_DIR/.bitcoin -server
+	if [ -f $TARGET_DIR/bin/groestlcoin-qt ]; then
+      $TARGET_DIR/bin/groestlcoin-qt -conf=$TARGET_DIR/.groestlcoin/groestlcoin.conf -datadir=$TARGET_DIR/.groestlcoin -server
   fi
 EOF
 }
@@ -373,21 +372,21 @@ install_build_dependencies() {
 }
 
 get_bin_url() {
-    url="https://bitcoin.org/bin/bitcoin-core-$VERSION"
+    url="https://github.com/Groestlcoin/groestlcoin/releases/download/v$VERSION"
     case "$SYSTEM" in
         Linux)
             if program_exists "apk"; then
                 echo ""
             elif [ "$ARCH" = "armv7l" ]; then
-                url="$url/bitcoin-$VERSION-arm-linux-gnueabihf.tar.gz"
+                url="$url/groestlcoin-$VERSION-arm-linux-gnueabihf.tar.gz"
                 echo "$url"
             else
-                url="$url/bitcoin-$VERSION-$ARCH-linux-gnu.tar.gz"
+                url="$url/groestlcoin-$VERSION-$ARCH-linux-gnu.tar.gz"
                 echo "$url"
             fi
             ;;
         Darwin)
-            url="$url/bitcoin-$VERSION-osx64.tar.gz"
+            url="$url/groestlcoin-$VERSION-osx64.tar.gz"
             echo "$url"
             ;;
         FreeBSD)
@@ -400,37 +399,37 @@ get_bin_url() {
 }
 
 download_bin() {
-    checksum_url="https://bitcoin.org/bin/bitcoin-core-$VERSION/SHA256SUMS.asc"
-    signing_key_url="https://bitcoin.org/laanwj-releases.asc"
+    checksum_url="https://github.com/Groestlcoin/groestlcoin/releases/download/v$VERSION/SHA256SUMS.asc"
+    signing_key_url="https://groestlcoin.org/jackielove4u.asc"
 
     cd $TARGET_DIR
 
-    rm -f bitcoin-$VERSION.tar.gz checksum.asc signing_key.asc
+    rm -f groestlcoin-$VERSION.tar.gz checksum.asc signing_key.asc
 
-    print_info "\nDownloading Bitcoin Core binaries.."
+    print_info "\nDownloading Groestlcoin Core binaries.."
     if program_exists "wget"; then
-        wget -q "$1" -O bitcoin-$VERSION.tar.gz &&
+        wget -q "$1" -O groestlcoin-$VERSION.tar.gz &&
         wget -q "$checksum_url" -O checksum.asc &&
         wget -q "$signing_key_url" -O signing_key.asc &&
-        mkdir -p bitcoin-$VERSION &&
-        tar xzf bitcoin-$VERSION.tar.gz -C bitcoin-$VERSION --strip-components=1
+        mkdir -p groestlcoin-$VERSION &&
+        tar xzf groestlcoin-$VERSION.tar.gz -C groestlcoin-$VERSION --strip-components=1
     elif program_exists "curl"; then
-        curl -s "$1" -o bitcoin-$VERSION.tar.gz &&
+        curl -s "$1" -o groestlcoin-$VERSION.tar.gz &&
         curl -s "$checksum_url" -o checksum.asc &&
         curl -s "$signing_key_url" -o signing_key.asc &&
-        mkdir -p bitcoin-$VERSION &&
-        tar xzf bitcoin-$VERSION.tar.gz -C bitcoin-$VERSION --strip-components=1
+        mkdir -p groestlcoin-$VERSION &&
+        tar xzf groestlcoin-$VERSION.tar.gz -C groestlcoin-$VERSION --strip-components=1
     else
         print_error "\nwget or curl program is required to continue. Please install wget or curl as root and rerun this script as normal user."
         exit 1
     fi
 
     if program_exists "shasum"; then
-        checksum=$(shasum -a 256 bitcoin-$VERSION.tar.gz | awk '{ print $1 }')
+        checksum=$(shasum -a 256 groestlcoin-$VERSION.tar.gz | awk '{ print $1 }')
         if grep -q "$checksum" checksum.asc; then
-            print_success "Checksum passed: bitcoin-$VERSION.tar.gz ($checksum)"
+            print_success "Checksum passed: groestlcoin-$VERSION.tar.gz ($checksum)"
         else
-            print_error "Checksum failed: bitcoin-$VERSION.tar.gz ($checksum). Please rerun this script to download and validate the binaries again."
+            print_error "Checksum failed: groestlcoin-$VERSION.tar.gz ($checksum). Please rerun this script to download and validate the binaries again."
             exit 1
         fi
     fi
@@ -447,14 +446,14 @@ download_bin() {
         fi
     fi
 
-    rm -f bitcoin-$VERSION.tar.gz checksum.asc signing_key.asc
+    rm -f groestlcoin-$VERSION.tar.gz checksum.asc signing_key.asc
 }
 
-build_bitcoin_core() {
+build_groestlcoin_core() {
     cd $TARGET_DIR
 
-    if [ ! -d "$TARGET_DIR/bitcoin" ]; then
-        print_info "\nDownloading Bitcoin Core source files.."
+    if [ ! -d "$TARGET_DIR/groestlcoin" ]; then
+        print_info "\nDownloading Groestlcoin Core source files.."
         git clone --quiet $REPO_URL
     fi
 
@@ -467,11 +466,11 @@ build_bitcoin_core() {
         fi
     fi
 
-    print_info "\nBuilding Bitcoin Core v$VERSION"
-    print_info "Build output: $TARGET_DIR/bitcoin/build.out"
+    print_info "\nBuilding Groestlcoin Core v$VERSION"
+    print_info "Build output: $TARGET_DIR/groestlcoin/build.out"
     print_info "This can take up to an hour or more.."
     rm -f build.out
-    cd bitcoin &&
+    cd groestlcoin &&
     git fetch > build.out 2>&1 &&
     git checkout "v$VERSION" 1>> build.out 2>&1 &&
     git clean -f -d -x 1>> build.out 2>&1 &&
@@ -486,66 +485,66 @@ build_bitcoin_core() {
         1>> build.out 2>&1 &&
     $MAKE 1>> build.out 2>&1
 
-    if [ ! -f "$TARGET_DIR/bitcoin/src/bitcoind" ]; then
-        print_error "Build failed. See $TARGET_DIR/bitcoin/build.out"
+    if [ ! -f "$TARGET_DIR/groestlcoin/src/groestlcoind" ]; then
+        print_error "Build failed. See $TARGET_DIR/groestlcoin/build.out"
         exit 1
     fi
 
     sleep 1
 
-    $TARGET_DIR/bitcoin/src/bitcoind -? > /dev/null
+    $TARGET_DIR/groestlcoin/src/groestlcoind -? > /dev/null
     retcode=$?
     if [ $retcode -ne 1 ]; then
-        print_error "Failed to execute $TARGET_DIR/bitcoin/src/bitcoind. See $TARGET_DIR/bitcoin/build.out"
+        print_error "Failed to execute $TARGET_DIR/groestlcoin/src/groestlcoind. See $TARGET_DIR/groestlcoin/build.out"
         exit 1
     fi
 }
 
-install_bitcoin_core() {
+install_groestlcoin_core() {
     cd $TARGET_DIR
 
-    print_info "\nInstalling Bitcoin Core v$VERSION"
+    print_info "\nInstalling Groestlcoin Core v$VERSION"
 
     if [ ! -d "$TARGET_DIR/bin" ]; then
         mkdir -p $TARGET_DIR/bin
     fi
 
-    if [ ! -d "$TARGET_DIR/.bitcoin" ]; then
-        mkdir -p $TARGET_DIR/.bitcoin
+    if [ ! -d "$TARGET_DIR/.groestlcoin" ]; then
+        mkdir -p $TARGET_DIR/.groestlcoin
     fi
 
     if [ "$SYSTEM" = "Darwin" ]; then
-        if [ ! -e "$HOME/Library/Application Support/Bitcoin" ]; then
-            ln -s $TARGET_DIR/.bitcoin "$HOME/Library/Application Support/Bitcoin"
+        if [ ! -e "$HOME/Library/Application Support/Groestlcoin" ]; then
+            ln -s $TARGET_DIR/.groestlcoin "$HOME/Library/Application Support/Groestlcoin"
         fi
     else
-        if [ ! -e "$HOME/.bitcoin" ]; then
-            ln -s $TARGET_DIR/.bitcoin $HOME/.bitcoin
+        if [ ! -e "$HOME/.groestlcoin" ]; then
+            ln -s $TARGET_DIR/.groestlcoin $HOME/.groestlcoin
         fi
     fi
 
-    if [ -f "$TARGET_DIR/bitcoin/src/bitcoind" ]; then
+    if [ -f "$TARGET_DIR/groestlcoin/src/groestlcoind" ]; then
         # Install compiled binaries.
-        cp "$TARGET_DIR/bitcoin/src/bitcoind" "$TARGET_DIR/bin/" &&
-        cp "$TARGET_DIR/bitcoin/src/bitcoin-cli" "$TARGET_DIR/bin/" &&
-        print_success "Bitcoin Core v$VERSION (compiled) installed successfully!"
-    elif [ -f "$TARGET_DIR/bitcoin-$VERSION/bin/bitcoind" ]; then
+        cp "$TARGET_DIR/groestlcoin/src/groestlcoind" "$TARGET_DIR/bin/" &&
+        cp "$TARGET_DIR/groestlcoin/src/groestlcoin-cli" "$TARGET_DIR/bin/" &&
+        print_success "Groestlcoin Core v$VERSION (compiled) installed successfully!"
+    elif [ -f "$TARGET_DIR/groestlcoin-$VERSION/bin/groestlcoind" ]; then
         # Install downloaded binaries.
-        cp "$TARGET_DIR/bitcoin-$VERSION/bin/bitcoind" "$TARGET_DIR/bin/" &&
-        cp "$TARGET_DIR/bitcoin-$VERSION/bin/bitcoin-cli" "$TARGET_DIR/bin/" &&
-        cp "$TARGET_DIR/bitcoin-$VERSION/bin/bitcoin-qt" "$TARGET_DIR/bin/" &&
-        cp "$TARGET_DIR/bitcoin-$VERSION/bin/bitcoin-tx" "$TARGET_DIR/bin/" &&
-        cp "$TARGET_DIR/bitcoin-$VERSION/bin/bitcoin-wallet" "$TARGET_DIR/bin/" &&
-        cp "$TARGET_DIR/bitcoin-$VERSION/bin/test_bitcoin" "$TARGET_DIR/bin/" &&
-        rm -rf "$TARGET_DIR/bitcoin-$VERSION"
-        print_success "Bitcoin Core v$VERSION (binaries) installed successfully!"
+        cp "$TARGET_DIR/groestlcoin-$VERSION/bin/groestlcoind" "$TARGET_DIR/bin/" &&
+        cp "$TARGET_DIR/groestlcoin-$VERSION/bin/groestlcoin-cli" "$TARGET_DIR/bin/" &&
+        cp "$TARGET_DIR/groestlcoin-$VERSION/bin/groestlcoin-qt" "$TARGET_DIR/bin/" &&
+        cp "$TARGET_DIR/groestlcoin-$VERSION/bin/groestlcoin-tx" "$TARGET_DIR/bin/" &&
+        cp "$TARGET_DIR/groestlcoin-$VERSION/bin/groestlcoin-wallet" "$TARGET_DIR/bin/" &&
+        cp "$TARGET_DIR/groestlcoin-$VERSION/bin/test_groestlcoin" "$TARGET_DIR/bin/" &&
+        rm -rf "$TARGET_DIR/groestlcoin-$VERSION"
+        print_success "Groestlcoin Core v$VERSION (binaries) installed successfully!"
     else
         print_error "Cannot find files to install."
         exit 1
     fi
 
-    config_file >  "$TARGET_DIR/.bitcoin/bitcoin.conf"
-    chmod go-rw $TARGET_DIR/.bitcoin/bitcoin.conf
+    config_file >  "$TARGET_DIR/.groestlcoin/groestlcoin.conf"
+    chmod go-rw $TARGET_DIR/.groestlcoin/groestlcoin.conf
 
     start_sh > $TARGET_DIR/bin/start.sh
     chmod ugo+x $TARGET_DIR/bin/start.sh
@@ -557,89 +556,89 @@ install_bitcoin_core() {
     chmod ugo+x $TARGET_DIR/bin/start-qt.sh
 }
 
-start_bitcoin_core() {
-    if [ ! -f $TARGET_DIR/.bitcoin/bitcoind.pid ]; then
-        print_info "\nStarting Bitcoin Core.."
+start_groestlcoin_core() {
+    if [ ! -f $TARGET_DIR/.groestlcoin/groestlcoind.pid ]; then
+        print_info "\nStarting Groestlcoin Core.."
         cd $TARGET_DIR/bin && ./start.sh
 
         timer=0
-        until [ -f $TARGET_DIR/.bitcoin/bitcoind.pid ] || [ $timer -eq 5 ]; do
+        until [ -f $TARGET_DIR/.groestlcoin/groestlcoind.pid ] || [ $timer -eq 5 ]; do
             timer=$((timer + 1))
             sleep $timer
         done
 
-        if [ -f $TARGET_DIR/.bitcoin/bitcoind.pid ]; then
-            print_success "Bitcoin Core is running!"
+        if [ -f $TARGET_DIR/.groestlcoin/groestlcoind.pid ]; then
+            print_success "Groestlcoin Core is running!"
         else
-            print_error "Failed to start Bitcoin Core."
+            print_error "Failed to start Groestlcoin Core."
             exit 1
         fi
     fi
 }
 
-stop_bitcoin_core() {
-    if [ -f $TARGET_DIR/.bitcoin/bitcoind.pid ]; then
-        print_info "\nStopping Bitcoin Core.."
+stop_groestlcoin_core() {
+    if [ -f $TARGET_DIR/.groestlcoin/groestlcoind.pid ]; then
+        print_info "\nStopping Groestlcoin Core.."
         cd $TARGET_DIR/bin && ./stop.sh
 
         timer=0
-        until [ ! -f $TARGET_DIR/.bitcoin/bitcoind.pid ] || [ $timer -eq 120 ]; do
+        until [ ! -f $TARGET_DIR/.groestlcoin/groestlcoind.pid ] || [ $timer -eq 120 ]; do
             timer=$((timer + 1))
             sleep $timer
         done
 
-        if [ ! -f $TARGET_DIR/.bitcoin/bitcoind.pid ]; then
-            print_success "Bitcoin Core stopped."
+        if [ ! -f $TARGET_DIR/.groestlcoin/groestlcoind.pid ]; then
+            print_success "Groestlcoin Core stopped."
         else
-            print_error "Failed to stop Bitcoin Core."
+            print_error "Failed to stop Groestlcoin Core."
             exit 1
         fi
     fi
 }
 
-check_bitcoin_core() {
-    if [ -f $TARGET_DIR/.bitcoin/bitcoind.pid ]; then
-        if [ -f $TARGET_DIR/bin/bitcoin-cli ]; then
-            print_info "\nChecking Bitcoin Core.."
+check_groestlcoin_core() {
+    if [ -f $TARGET_DIR/.groestlcoin/groestlcoind.pid ]; then
+        if [ -f $TARGET_DIR/bin/groestlcoin-cli ]; then
+            print_info "\nChecking Groestlcoin Core.."
             sleep 5
-            $TARGET_DIR/bin/bitcoin-cli -conf=$TARGET_DIR/.bitcoin/bitcoin.conf -datadir=$TARGET_DIR/.bitcoin getnetworkinfo
+            $TARGET_DIR/bin/groestlcoin-cli -conf=$TARGET_DIR/.groestlcoin/groestlcoin.conf -datadir=$TARGET_DIR/.groestlcoin getnetworkinfo
         fi
 
         reachable=$(curl -I https://bitnodes.io/api/v1/nodes/me-$PORT/ 2> /dev/null | head -n 1 | cut -d ' ' -f2)
         if [ $reachable -eq 200 ]; then
-            print_success "Bitcoin Core is accepting incoming connections at port $PORT!"
+            print_success "Groestlcoin Core is accepting incoming connections at port $PORT!"
         else
-            print_warning "Bitcoin Core is not accepting incoming connections at port $PORT. You may need to configure port forwarding (https://bitcoin.org/en/full-node#port-forwarding) on your router."
+            print_warning "Groestlcoin Core is not accepting incoming connections at port $PORT. You may need to configure port forwarding on your router."
         fi
     fi
 }
 
-uninstall_bitcoin_core() {
-    stop_bitcoin_core
+uninstall_groestlcoin_core() {
+    stop_groestlcoin_core
 
     if [ -d "$TARGET_DIR" ]; then
-        print_info "\nUninstalling Bitcoin Core.."
+        print_info "\nUninstalling Groestlcoin Core.."
         rm -rf $TARGET_DIR
 
         # Remove stale symlink.
         if [ "$SYSTEM" = "Darwin" ]; then
-            if [ -L "$HOME/Library/Application Support/Bitcoin" ] && [ ! -d "$HOME/Library/Application Support/Bitcoin" ]; then
-                rm "$HOME/Library/Application Support/Bitcoin"
+            if [ -L "$HOME/Library/Application Support/Groestlcoin" ] && [ ! -d "$HOME/Library/Application Support/Groestlcoin" ]; then
+                rm "$HOME/Library/Application Support/Groestlcoin"
             fi
         else
-            if [ -L $HOME/.bitcoin ] && [ ! -d $HOME/.bitcoin ]; then
-                rm $HOME/.bitcoin
+            if [ -L $HOME/.groestlcoin ] && [ ! -d $HOME/.groestlcoin ]; then
+                rm $HOME/.groestlcoin
             fi
         fi
 
         if [ ! -d "$TARGET_DIR" ]; then
-            print_success "Bitcoin Core uninstalled successfully!"
+            print_success "Groestlcoin Core uninstalled successfully!"
         else
-            print_error "Uninstallation failed. Is Bitcoin Core still running?"
+            print_error "Uninstallation failed. Is Groestlcoin Core still running?"
             exit 1
         fi
     else
-        print_error "Bitcoin Core not installed."
+        print_error "Groestlcoin Core not installed."
     fi
 }
 
@@ -676,9 +675,9 @@ print_start
 
 if [ $UNINSTALL -eq 1 ]; then
     echo
-    read -p "WARNING: This will stop Bitcoin Core and uninstall it from your system. Uninstall? (y/n) " answer
+    read -p "WARNING: This will stop Groestlcoin Core and uninstall it from your system. Uninstall? (y/n) " answer
     if [ "$answer" = "y" ]; then
-        uninstall_bitcoin_core
+        uninstall_groestlcoin_core
     fi
 else
     welcome
@@ -699,17 +698,17 @@ else
         else
             bin_url=""
         fi
-        stop_bitcoin_core
+        stop_groestlcoin_core
         create_target_dir
         if [ "$bin_url" != "" ]; then
             download_bin "$bin_url"
         else
-            install_build_dependencies && build_bitcoin_core
+            install_build_dependencies && build_groestlcoin_core
         fi
-        install_bitcoin_core && start_bitcoin_core && check_bitcoin_core
+        install_groestlcoin_core && start_groestlcoin_core && check_groestlcoin_core
         readme > $TARGET_DIR/README.md
         cat $TARGET_DIR/README.md
-        print_success "If this your first install, Bitcoin Core may take several hours to download a full copy of the blockchain."
+        print_success "If this your first install, Groestlcoin Core may take several hours to download a full copy of the blockchain."
         print_success "\nInstallation completed!"
     fi
 fi
